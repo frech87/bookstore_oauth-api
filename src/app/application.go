@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/frech87/bookstore_oauth-api/src/http"
 	"github.com/frech87/bookstore_oauth-api/src/repository/db"
+	"github.com/frech87/bookstore_oauth-api/src/repository/rest"
 	"github.com/frech87/bookstore_oauth-api/src/service"
 	"github.com/gin-gonic/gin"
 )
@@ -14,8 +15,8 @@ var (
 func StartApplication() {
 	//dbRepository := db.New()
 	//atService := access_token.NewService(dbRepository)
-
-	atService := service.NewService(db.New())
+	restService := rest.NewUserRepository()
+	atService := service.NewService(restService, db.New())
 	atHandler := http.NewHandler(atService)
 
 	router.GET("/oauth/access_token/:access_token_id", atHandler.GetById)
